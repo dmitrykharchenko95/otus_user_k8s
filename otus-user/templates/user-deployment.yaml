@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment
+  labels:
+    app: user
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user
+          image: dmitrykharchenko95/otus_user:v0.0.6
+          ports:
+            - containerPort: 8000
+              name: user-pod-port
+          env:
+            - name: SVC_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: user-config-map
+                  key: SVC_ADDRESS
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: user-config-map
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: user-config-map
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: user-config-map
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: user-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: user-secret
+                  key: DB_USER
