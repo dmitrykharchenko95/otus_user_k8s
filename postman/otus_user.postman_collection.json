@@ -1,0 +1,337 @@
+{
+	"info": {
+		"_postman_id": "25d5c871-22a7-4cfa-b722-0b0e73574ac9",
+		"name": "otus_user",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody); ",
+							"pm.collectionVariables.set('user_id', jsonData.id);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"ivan_ivanov\",\n  \"firstName\": \"Ivan\",\n  \"lastName\": \"Ivanov\",\n  \"email\":\"ivan_ivanov@bar.com\",\n  \"phone\": \"+79998998899\"\n}"
+				},
+				"url": {
+					"raw": "{{serviceAddress}}/user",
+					"host": [
+						"{{serviceAddress}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json; ",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Check username\", function () {",
+							"    const jsonData = pm.response.json(); ",
+							"",
+							"    pm.expect(jsonData).to.have.property('username');",
+							"    pm.expect(jsonData.username).to.equal(\"ivan_ivanov\");",
+							"});",
+							"",
+							"pm.test(\"Check email\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('email');",
+							"    pm.expect(jsonData.email).to.equal('ivan_ivanov@bar.com');",
+							"});",
+							"",
+							"pm.test(\"Check first name\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('firstName');",
+							"    pm.expect(jsonData.firstName).to.equal('Ivan');",
+							"});",
+							"",
+							"pm.test(\"Check last name\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('lastName');",
+							"    pm.expect(jsonData.lastName).to.equal('Ivanov'); ",
+							"});",
+							"",
+							"pm.test(\"Check phone\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('phone');",
+							"    pm.expect(jsonData.phone).to.equal('+79998998899'); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"host": [
+						"{{serviceAddress}}"
+					],
+					"path": [
+						"user",
+						"{{user_id}}"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "8",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"new_mail@foo.com\",\n  \"phone\": \"+79771234567\"\n}"
+				},
+				"url": {
+					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"host": [
+						"{{serviceAddress}}"
+					],
+					"path": [
+						"user",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user after updating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Check username\", function () {",
+							"    const jsonData = pm.response.json(); ",
+							"",
+							"    pm.expect(jsonData).to.have.property('username');",
+							"    pm.expect(jsonData.username).to.equal(\"ivan_ivanov\");",
+							"});",
+							"",
+							"pm.test(\"Check email\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('email');",
+							"    pm.expect(jsonData.email).to.equal('new_mail@foo.com');",
+							"});",
+							"",
+							"pm.test(\"Check first name\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('firstName');",
+							"    pm.expect(jsonData.firstName).to.equal('Ivan');",
+							"});",
+							"",
+							"pm.test(\"Check last name\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('lastName');",
+							"    pm.expect(jsonData.lastName).to.equal('Ivanov'); ",
+							"});",
+							"",
+							"pm.test(\"Check phone\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData).to.have.property('phone');",
+							"    pm.expect(jsonData.phone).to.equal('+79771234567'); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"host": [
+						"{{serviceAddress}}"
+					],
+					"path": [
+						"user",
+						"{{user_id}}"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "8",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"host": [
+						"{{serviceAddress}}"
+					],
+					"path": [
+						"user",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User not found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"host": [
+						"{{serviceAddress}}"
+					],
+					"path": [
+						"user",
+						"{{user_id}}"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "8",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "serviceAddress",
+			"value": "http://arch.homework/api/v1",
+			"type": "default"
+		},
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "default"
+		}
+	]
+}
