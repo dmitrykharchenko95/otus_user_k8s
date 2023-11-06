@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: user-monitor
+  labels:
+    app: user-monitor
+
+spec:
+  endpoints:
+    - port: user-service-port
+      scrapeTimeout: 10s
+      path: /metrics
+      honorLabels: true
+      scheme: http
+  namespaceSelector:
+    matchNames:
+      - otus-user
+  selector:
+    matchLabels:
+      app: user

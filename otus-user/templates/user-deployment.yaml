@@ -20,7 +20,8 @@ spec:
     spec:
       containers:
         - name: user
-          image: dmitrykharchenko95/otus_user:v0.0.6
+          image: dmitrykharchenko95/otus_user:v0.0.7
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
               name: user-pod-port
