@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: migrate-job
-          image: dmitrykharchenko95/otus_user_migrate:v0.0.1
+          image: dmitrykharchenko95/otus_user_migrate:v0.0.2
           env:
             - name: DB_HOST
               valueFrom:
