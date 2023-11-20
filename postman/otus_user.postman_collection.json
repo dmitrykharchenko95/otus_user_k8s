@@ -1,22 +1,39 @@
 {
 	"info": {
-		"_postman_id": "25d5c871-22a7-4cfa-b722-0b0e73574ac9",
-		"name": "otus_user",
+		"_postman_id": "fcf7fad3-62bb-43a4-ac1e-fe4625f67107",
+		"name": "otus_user_auth",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Create user",
+			"name": "Create user 1",
 			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('user1_username', pm.variables.replaceIn('{{$randomUserName}}'));",
+							"pm.collectionVariables.set('user1_first_name', pm.variables.replaceIn('{{$randomFirstName}}'));",
+							"pm.collectionVariables.set('user1_last_name', pm.variables.replaceIn('{{$randomLastName}}'));",
+							"pm.collectionVariables.set('user1_email', pm.variables.replaceIn('{{$randomEmail}}'));",
+							"pm.collectionVariables.set('user1_pass', pm.variables.replaceIn('{{$randomPassword}}'));",
+							"pm.collectionVariables.set('user1_phone', pm.variables.replaceIn('{{$randomPhoneNumber}}'));",
+						],
+						"type": "text/javascript"
+					}
+				},
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
+							"",
 							"var jsonData = JSON.parse(responseBody); ",
-							"pm.collectionVariables.set('user_id', jsonData.id);",
+							"pm.collectionVariables.set('user1_id', jsonData.id);",
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
-							"});"
+							"});",
+							"console.log(\"response body:\", responseBody)",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -27,12 +44,12 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"username\": \"ivan_ivanov\",\n  \"firstName\": \"Ivan\",\n  \"lastName\": \"Ivanov\",\n  \"email\":\"ivan_ivanov@bar.com\",\n  \"phone\": \"+79998998899\"\n}"
+					"raw": "{\n  \"username\": \"{{user1_username}}\",\n  \"firstName\": \"{{user1_first_name}}\",\n  \"lastName\": \"{{user1_last_name}}\",\n  \"email\":\"{{user1_email}}\",\n  \"password\": \"{{user1_pass}}\",\n  \"phone\": \"{{user1_phone}}\"\n}"
 				},
 				"url": {
-					"raw": "{{serviceAddress}}/user",
+					"raw": "{{baseURL}}/user",
 					"host": [
-						"{{serviceAddress}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"user"
@@ -42,55 +59,18 @@
 			"response": []
 		},
 		{
-			"name": "Get user",
+			"name": "Get user 1 (fail)",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json; ",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
 							"});",
 							"",
-							"pm.test(\"Response is JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"Check username\", function () {",
-							"    const jsonData = pm.response.json(); ",
-							"",
-							"    pm.expect(jsonData).to.have.property('username');",
-							"    pm.expect(jsonData.username).to.equal(\"ivan_ivanov\");",
-							"});",
-							"",
-							"pm.test(\"Check email\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('email');",
-							"    pm.expect(jsonData.email).to.equal('ivan_ivanov@bar.com');",
-							"});",
-							"",
-							"pm.test(\"Check first name\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('firstName');",
-							"    pm.expect(jsonData.firstName).to.equal('Ivan');",
-							"});",
-							"",
-							"pm.test(\"Check last name\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('lastName');",
-							"    pm.expect(jsonData.lastName).to.equal('Ivanov'); ",
-							"});",
-							"",
-							"pm.test(\"Check phone\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('phone');",
-							"    pm.expect(jsonData.phone).to.equal('+79998998899'); ",
-							"});"
+							"console.log(\"response body:\", responseBody)",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -100,35 +80,29 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"raw": "{{baseURL}}/user/{{user1_id}}",
 					"host": [
-						"{{serviceAddress}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"user",
-						"{{user_id}}"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "8",
-							"disabled": true
-						}
+						"{{user1_id}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Update user",
+			"name": "Update user 1 (fail)",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"console.log(\"response body:\", responseBody)",
 						],
 						"type": "text/javascript"
 					}
@@ -142,20 +116,20 @@
 					"raw": "{\n  \"email\":\"new_mail@foo.com\",\n  \"phone\": \"+79771234567\"\n}"
 				},
 				"url": {
-					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"raw": "{{baseURL}}/user/{{user1_id}}",
 					"host": [
-						"{{serviceAddress}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"user",
-						"{{user_id}}"
+						"{{user1_id}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Get user after updating",
+			"name": "Login user 1",
 			"event": [
 				{
 					"listen": "test",
@@ -164,114 +138,129 @@
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
-							"",
-							"pm.test(\"Response is JSON\", function () {",
-							"    pm.response.to.be.json;",
-							"});",
-							"",
-							"pm.test(\"Check username\", function () {",
-							"    const jsonData = pm.response.json(); ",
-							"",
-							"    pm.expect(jsonData).to.have.property('username');",
-							"    pm.expect(jsonData.username).to.equal(\"ivan_ivanov\");",
-							"});",
-							"",
-							"pm.test(\"Check email\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('email');",
-							"    pm.expect(jsonData.email).to.equal('new_mail@foo.com');",
-							"});",
-							"",
-							"pm.test(\"Check first name\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('firstName');",
-							"    pm.expect(jsonData.firstName).to.equal('Ivan');",
-							"});",
-							"",
-							"pm.test(\"Check last name\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('lastName');",
-							"    pm.expect(jsonData.lastName).to.equal('Ivanov'); ",
-							"});",
-							"",
-							"pm.test(\"Check phone\", function () {",
-							"    const jsonData = pm.response.json();",
-							"",
-							"    pm.expect(jsonData).to.have.property('phone');",
-							"    pm.expect(jsonData.phone).to.equal('+79771234567'); ",
-							"});"
+							"var jsonData = JSON.parse(responseBody); ",
+							"pm.collectionVariables.set('user1_id', jsonData.userID);",
+							"pm.globals.set('access_token2', jsonData.token);",
+														"console.log(\"response body:\", responseBody)"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"{{user1_email}}\",\n  \"password\": \"{{user1_pass}}\"\n}"
+				},
 				"url": {
-					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"raw": "{{baseURL}}/login",
 					"host": [
-						"{{serviceAddress}}"
+						"{{baseURL}}"
 					],
 					"path": [
-						"user",
-						"{{user_id}}"
-					],
-					"query": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user 1 (success)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+														"console.log(\"response body:\", responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('user1_first_name_new', pm.variables.replaceIn('{{$randomFirstName}}'));",
+							"pm.collectionVariables.set('user1_phone_new', pm.variables.replaceIn('{{$randomPhoneNumber}}'));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "id",
-							"value": "8",
-							"disabled": true
+							"key": "token",
+							"value": "{{access_token2}}",
+							"type": "string"
 						}
 					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 204\", function () {",
-							"    pm.response.to.have.status(204);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
+				},
+				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\":\"{{user1_first_name_new}}\",\n  \"phone\": \"{{user1_phone_new}}\"\n}"
+				},
 				"url": {
-					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"raw": "{{baseURL}}/user/{{user1_id}}",
 					"host": [
-						"{{serviceAddress}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"user",
-						"{{user_id}}"
+						"{{user1_id}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "User not found",
+			"name": "Get user 1 (success)",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404\", function () {",
-							"    pm.response.to.have.status(404);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});",
+														"pm.test(\"Response is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+														"pm.test(\"Check username\", function () {",
+							"    const jsonData = pm.response.json(); ",
+														"    pm.expect(jsonData).to.have.property('username');",
+							"    pm.expect(jsonData.username).to.equal(pm.variables.get('user1_username'));",
+							"});",
+														"pm.test(\"Check email\", function () {",
+							"    const jsonData = pm.response.json();",
+														"    pm.expect(jsonData).to.have.property('email');",
+							"    pm.expect(jsonData.email).to.equal(pm.variables.get('user1_email'));",
+							"});",
+														"pm.test(\"Check first name\", function () {",
+							"    const jsonData = pm.response.json();",
+														"    pm.expect(jsonData).to.have.property('firstName');",
+							"    pm.expect(jsonData.firstName).to.equal(pm.variables.get('user1_first_name_new'));",
+							"});",
+														"pm.test(\"Check last name\", function () {",
+							"    const jsonData = pm.response.json();",
+														"    pm.expect(jsonData).to.have.property('lastName');",
+							"    pm.expect(jsonData.lastName).to.equal(pm.variables.get('user1_last_name')); ",
+							"});",
+														"pm.test(\"Check phone\", function () {",
+							"    const jsonData = pm.response.json();",
+														"    pm.expect(jsonData).to.have.property('phone');",
+							"    pm.expect(jsonData.phone).to.equal(pm.variables.get('user1_phone_new')); ",
+							"});",
+														"console.log(\"response body:\", responseBody)",
 							""
 						],
 						"type": "text/javascript"
@@ -279,29 +268,166 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token2}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{serviceAddress}}/user/{{user_id}}",
+					"raw": "{{baseURL}}/user/{{user1_id}}",
 					"host": [
-						"{{serviceAddress}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"user",
-						"{{user_id}}"
+						"{{user1_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('user2_username', pm.variables.replaceIn('{{$randomUserName}}'));",
+							"pm.collectionVariables.set('user2_first_name', pm.variables.replaceIn('{{$randomFirstName}}'));",
+							"pm.collectionVariables.set('user2_last_name', pm.variables.replaceIn('{{$randomLastName}}'));",
+							"pm.collectionVariables.set('user2_email', pm.variables.replaceIn('{{$randomEmail}}'));",
+							"pm.collectionVariables.set('user2_pass', pm.variables.replaceIn('{{$randomPassword}}'));",
+							"pm.collectionVariables.set('user2_phone', pm.variables.replaceIn('{{$randomPhoneNumber}}'));",
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody); ",
+							"pm.collectionVariables.set('user2_id', jsonData.id);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"console.log(\"response body:\", responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"{{user2_username}}\",\n  \"firstName\": \"{{user2_first_name}}\",\n  \"lastName\": \"{{user2_last_name}}\",\n  \"email\":\"{{user2_email}}\",\n  \"password\": \"{{user2_pass}}\",\n  \"phone\": \"{{user2_phone}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/user",
+					"host": [
+						"{{baseURL}}"
 					],
-					"query": [
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login user 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = JSON.parse(responseBody); ",
+							"pm.collectionVariables.set('user2_id', jsonData.userID);",
+							"pm.globals.set('access_token2', jsonData.token);",
+							"console.log(\"response body:\", responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"{{user2_email}}\",\n  \"password\": \"{{user2_pass}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user 1 by user 2 (fail)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"console.log(\"response body:\", responseBody)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "id",
-							"value": "8",
-							"disabled": true
+							"key": "token",
+							"value": "{{access_token2}}",
+							"type": "string"
 						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/user/{{user1_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"{{user1_id}}"
 					]
 				}
 			},
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer"
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -324,14 +450,106 @@
 	],
 	"variable": [
 		{
-			"key": "serviceAddress",
+			"key": "baseURL",
 			"value": "http://arch.homework/api/v1",
 			"type": "default"
 		},
 		{
-			"key": "user_id",
+			"key": "autharization",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_id",
 			"value": "1",
 			"type": "default"
+		},
+		{
+			"key": "user1_username",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_first_name",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_last_name",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_email",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_pass",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_phone",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_first_name_new",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user1_phone_new",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user2_id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user2_username",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user2_first_name",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user2_last_name",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user2_email",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user2_pass",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user2_phone",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "user_id",
+			"value": ""
+		},
+		{
+			"key": "user2_phone_new",
+			"value": ""
+		},
+		{
+			"key": "user_id_new",
+			"value": ""
 		}
 	]
 }

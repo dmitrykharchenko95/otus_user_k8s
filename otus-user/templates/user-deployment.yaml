@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: user
-          image: dmitrykharchenko95/otus_user:v0.0.7
+          image: dmitrykharchenko95/otus_user:v0.0.8
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -56,3 +56,8 @@ spec:
                 secretKeyRef:
                   name: user-secret
                   key: DB_USER
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: user-secret
+                  key: JWT_KEY
